@@ -24,7 +24,7 @@ We are at the cheese-shop: ::
 Usage
 -----
 
-In order to use django_forest in your project: ::
+In order to use django_forest in your project:
 
 1. Include `mptt` and `forest` in your `INSTALLED_APPS` settings.
 2. Enable `django-admin`.
