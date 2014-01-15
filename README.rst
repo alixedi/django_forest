@@ -14,11 +14,6 @@ django_forest
 
 Composite pages for django.
 
-Documentation
--------------
-
-The full documentation is at http://django_forest.rtfd.org.
-
 Installation
 ------------
 
