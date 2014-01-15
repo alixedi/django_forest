@@ -12,7 +12,7 @@ django_forest
         :target: https://crate.io/packages/django_forest?version=latest
 
 
-Composite views for REST services.
+Composite pages for django.
 
 Documentation
 -------------
