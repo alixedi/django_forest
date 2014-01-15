@@ -1,0 +1,50 @@
+{% load mptt_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>CMS2 by BitsWits</title>
+    <meta name="description" content="CMS2=REST+GVIZ+GRIDSTER">
+    <meta name="author" content="Ali Zaidi">
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+        <script src="../web/js/html5shiv.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+        }
+    </style>
+    {% block extra_head %}
+    {% endblock %}
+</head>
+<body>
+    <!-- Navbar - maybe moved in a separate file with better handling of root pages -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="#">DEMO</a>
+                {% block page_nav %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+      {% block page_header %}
+      {% endblock %}
+
+      {% block content %}
+      {% endblock %}
+    
+    </div>
+
+    <!-- Le javascript -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    {% block extra_script %}
+    {% endblock %}
+</body>
+</html>

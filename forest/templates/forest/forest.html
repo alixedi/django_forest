@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load mptt_tags %}
+
+{% block extra_head %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}forest/css/jquery.gridster.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}forest/css/style.css">
+{% endblock %}
+
+{% block page_nav %}
+    <ul class="nav">
+        {% recursetree nodes %}
+            {% if node.is_leaf_node %}
+                <li><a href="{% url 'page' node.slug %}">{{ node.title }}</a></li>
+            {% else %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ node.title }}<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                            <li><a href="{% url 'page' node.slug %}">{{ node.title }}</a></li>
+                            {{ children }}
+                    </ul>
+                </li>
+            {% endif %}
+        {% endrecursetree %}
+    </ul>
+{% endblock %}
+
+{% block page_header %}
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>{{ page.title }} <small>{{ page.description }}</small></h1>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <!-- Widgets -->
+    <div class="gridster" >
+        <ul>
+            {% for widget in widgets %}
+            <li data-row="{{ widget.row }}" 
+                data-col="{{ widget.col }}" 
+                data-sizex="{{ widget.size_x }}" 
+                data-sizey="{{ widget.size_y }}">
+                <div id="{{ widget.slug }}"></div>    
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block extra_script %}
+    <script type="text/javascript" src="{{ STATIC_URL }}forest/js/jquery.gridster.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}forest/js/handlebars.js"></script>
+    <!-- Initialize gridster according to the page settings -->
+    <script type="text/javascript">
+        var gridster = {};
+        $(function(){
+            gridster = $(".gridster ul").gridster({
+                widget_margins: [{{ page.widget_margin_x }}, {{ page.widget_margin_y }}],
+                widget_base_dimensions: [{{ page.widget_base_dimension_x }}, {{ page.widget_base_dimension_y }}],
+                max_cols: {{ page.max_cols }},
+                min_cols: {{ page.min_cols }},
+                min_rows: {{ page.min_rows }},
+                max_size_x: {{ page.max_size_x }},
+                max_size_y: {{ page.max_size_y }},
+            }).data("gridster");
+        });
+    </script>
+    <!-- Code that renders each and every widget on the page -->
+    {% for widget in widgets %}
+        {% if widget.template %}
+            <!-- Initialize handlebar templatates for widget that have one -->
+            <script id="{{ widget.template.slug }}" type="text/x-handlebars-template">
+                {{ widget.template.code | safe }}
+            </script>
+        {% endif %}
+        <!-- Initialize the widget -->
+        <script type="text/javascript">
+            $(function(){
+                // If the widget defines a template, it means the rendering has to 
+                // be handled client-side
+                {% if widget.template %}
+                    // Get html of the defined handlebar template
+                    var source = $("#{{ widget.template.slug }}").html();
+                    // If the wdget has a URL defined, get json data and render
+                    // the template with this json as context and insert it
+                    // into the empty div inside the widget.
+                    {% if widget.url %}
+                        var template = Handlebars.compile(source);
+                        $.get("{{ widget.url }}", function(context) {
+                            var html = template(context);
+                            $("#{{ widget.slug }}").html(html);
+                            });
+                    // Now if the widget does not have any URL, it can only mean
+                    // that its template is static html. Therefore, we simply
+                    // insert the template in the empty div inside the widget.
+                    {% else %}
+                        $("#{{ widget.slug }}").html(source);
+                        {% endif %}
+                // Now if the widget does not define a template, it means that we
+                // should be getting pre-rendered html from the server.    
+                {% else %}
+                    $.get("{{ widget.url }}", function(html) {
+                        $("#{{ widget.slug }}").html(html);
+                    });
+                {% endif %}
+            });
+        </script>
+    {% endfor %}    
+{% endblock %}

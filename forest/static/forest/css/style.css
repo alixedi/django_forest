@@ -1,0 +1,32 @@
+/* Gridster styles */
+.gridster {
+    margin: 0 auto;
+    opacity: .8;
+    -webkit-transition: opacity .6s;
+    -moz-transition: opacity .6s;
+    -o-transition: opacity .6s;
+    -ms-transition: opacity .6s;
+    transition: opacity .6s;
+}
+
+.gridster .gs_w {
+    background: #EEE;
+    cursor: pointer;
+    -webkit-box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+.gridster .player {
+    -webkit-box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+}
+
+.gridster .preview-holder {
+    border: none!important;
+    border-radius: 0!important;
+    background: rgba(0,0,0,.2)!important;
+}
+
+.gridster ul, ol {
+    list-style: none;
+}
